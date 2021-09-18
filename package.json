@@ -1,0 +1,29 @@
+{
+  "name": "svelte-tf",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "format": "prettier --write '{public,src}/**/*.{css,html,js,svelte}'",
+    "lint": "eslint --fix --quiet src --ext .js,.svelte"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.11",
+    "autoprefixer": "^10.3.4",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-svelte3": "^3.2.0",
+    "postcss": "^8.3.6",
+    "prettier": "^2.3.2",
+    "prettier-plugin-svelte": "^2.4.0",
+    "svelte": "^3.37.0",
+    "tailwindcss": "^2.2.14",
+    "vite": "^2.5.4"
+  },
+  "dependencies": {
+    "@magenta/image": "^0.2.1",
+    "daisyui": "^1.14.0"
+  }
+}
