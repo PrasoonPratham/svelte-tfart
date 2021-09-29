@@ -1,83 +1,112 @@
 <script>
-  import * as mi from '@magenta/image';
-  import {onMount} from 'svelte';
+  let avatar, fileinput;
 
-  const model = new mi.ArbitraryStyleTransferNetwork();
+  import * as mi from 'https://cdn.jsdelivr.net/npm/@magenta/image@0.2.1/dist/magentaimage.min.js';
 
-  const contentImg = document.getElementById('content');
-  const styleImg = document.getElementById('style');
-  let canvas, ctx;
 
-  onMount(() => {
-    ctx = canvas.getContext('2d');
-  });
+  const onFileSelected = e => {
+    let image = e.target.files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(image);
+    reader.onload = e => {
+      avatar = e.target.result;
+    };
+  };
 
-  async function stylize() {
-    await clearCanvas();
+  let avatar2, fileinput2;
 
-    // Resize the canvas to be the same size as the source image.
-    canvas.width = contentImg.width;
-    canvas.height = contentImg.height;
+  const onFileSelected2 = f => {
+    let image2 = f.target.files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(image2);
+    reader.onload = f => {
+      avatar2 = f.target.result;
+    };
+  };
 
-    // This does all the work!
-    model.stylize(contentImg, styleImg).then(imageData => {
-      ctx.putImageData(imageData, 0, 0);
-    });
-  }
 
-  async function clearCanvas() {
-    // Don't block painting until we've reset the state.
-    await mi.tf.nextFrame();
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    await mi.tf.nextFrame();
-  }
 
-	let  avatar, fileinput;
-	
-	const loadImage =(e)=>{
-  let image = e.target.files[0];
-            let reader = new FileReader();
-            reader.readAsDataURL(image);
-            reader.onload = e => {
-                 e = e.target.result
-            };
-}
-
-  function loadContent(e) {
-    loadImage(e);
-  }
-
-  function loadStyle(event) {
-    loadImage(event, styleImg);
-  }
 </script>
 
-<div class="frame">
-  <label>upload photo <input type="file" on:click={loadContent(event)} /></label
+<div class="flex flex-row w-full">
+  <div
+    class="grid flex-grow h-full card bg-base-300 rounded-box place-items-center"
   >
+    {#if avatar}
+      <img class="avatar" src={avatar} alt="d" />
+    {:else}
+      <img
+        class="avatar"
+        src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png"
+        alt=""
+      />
+    {/if}
+    <img
+      class="upload"
+      src="https://static.thenounproject.com/png/625182-200.png"
+      alt=""
+      on:click={() => {
+        fileinput.click();
+      }}
+    />
+    <div
+      class="chan"
+      on:click={() => {
+        fileinput.click();
+      }}
+    >
+      Choose Image
+    </div>
+    <input
+      style="display:none"
+      type="file"
+      accept=".jpg, .jpeg, .png"
+      on:change={e => onFileSelected(e)}
+      bind:this={fileinput}
+    />
+  </div>
+</div>
 
-  <!-- svelte-ignore a11y-missing-attribute -->
+<div class="divider divider-vertical py-11" />
+
+<div
+  class="grid flex-grow h-full card bg-base-300 rounded-box place-items-center"
+>
+  {#if avatar2}
+    <img class="avatar" src={avatar2} alt="d" />
+  {:else}
+    <img
+      class="avatar2"
+      src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png"
+      alt=""
+    />
+  {/if}
   <img
-    id="content"
-    class="image"
-    crossorigin="anonymous"
-    src='{contentImg}'
+    class="upload"
+    src="https://static.thenounproject.com/png/625182-200.png"
+    alt=""
+    on:click={() => {
+      fileinput2.click();
+    }}
+  />
+  <div
+    class=""
+    on:click={() => {
+      fileinput2.click();
+    }}
+  >
+    Choose Image
+  </div>
+  <input
+    style="display:none"
+    type="file"
+    accept=".jpg, .jpeg, .png"
+    on:change={f => onFileSelected2(f)}
+    bind:this={fileinput2}
   />
 </div>
 
-<div class="frame">
-  <label>upload photo <input type="file" on:click={loadStyle(event)} /></label
-  >
-  <!-- svelte-ignore a11y-missing-attribute -->
-  <img
-    id="style"
-    class="image"
-    crossorigin="anonymous"
-    src="https://cdn.glitch.com/93893683-46da-4058-829c-a05792722f2b%2Fcontent.jpg?1545163443723"
-  />
-</div>
 
-<canvas id="stylized" bind:this={canvas} width={480} height={320} />
 
 <div class="py-8 px-8">
   <div class="alert">
