@@ -1,7 +1,6 @@
 <script>
   let avatar, fileinput;
 
-  import * as mi from 'https://cdn.jsdelivr.net/npm/@magenta/image@0.2.1/dist/magentaimage.min.js';
 
 
   const onFileSelected = e => {
